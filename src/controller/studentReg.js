@@ -28,13 +28,8 @@ export const regStudent = (async (req, res) => {
 export const deleteStudent = (async (req, res) => {
     try {
         const studentList = await readFile(),
-            newData = []
-        studentList.map((studentId) => {
-            if (req.params.studId !== studentId._id) {
-                newData.push(studentId)
-            }
-        })
-        writeFileSync(process.env.FILE_PATH, JSON.stringify(newData))
+            studentData = studentList.filter((stud) => req.params.studId !== stud._id)
+        writeFileSync(process.env.FILE_PATH, JSON.stringify(studentData))
         res.send({ message: "Deleted Successfully", code: 201 })
     } catch (error) {
         throw error
