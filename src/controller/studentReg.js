@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
+import generateResponse from "../utils/response-generator.js";
 
 
 const readFile = (async () => {
@@ -8,21 +9,22 @@ const readFile = (async () => {
 
 export const getStudentsList = (async (req, res) => {
     try {
-
         const students = await readFile()
-        res.send({ message: "success", code: 200, payload: students })
+        return res.send(generateResponse("success", 200, students))
     } catch (error) {
-        throw error
+        return res.send(generateResponse(error.message, 500))
     }
 })
+
 export const regStudent = (async (req, res) => {
     try {
         const studentList = await readFile()
         studentList.push(req.body)
         writeFileSync(process.env.FILE_PATH, JSON.stringify(studentList))
-        res.send({ message: "Registered Successfully", code: 201 })
+        return res.send(generateResponse("Registered Successfully", 201))
     } catch (error) {
-        throw error
+        return res.send(generateResponse(error.message, 500))
+
     }
 })
 export const deleteStudent = (async (req, res) => {
@@ -30,8 +32,8 @@ export const deleteStudent = (async (req, res) => {
         const studentList = await readFile(),
             studentData = studentList.filter((stud) => req.params.studId !== stud._id)
         writeFileSync(process.env.FILE_PATH, JSON.stringify(studentData))
-        res.send({ message: "Deleted Successfully", code: 201 })
+        return res.send(generateResponse("Deleted Successfully", 201))
     } catch (error) {
-        throw error
+        return res.send(generateResponse(error.message, 500))
     }
 })
