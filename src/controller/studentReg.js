@@ -12,7 +12,7 @@ export const getStudentsList = (async (req, res) => {
         const students = await readFile()
         return res.send(generateResponse("success", 200, students))
     } catch (error) {
-        return res.send(generateResponse(error.message, 500))
+        return res.status(500).send(generateResponse(error.message, 500))
     }
 })
 
@@ -23,7 +23,7 @@ export const regStudent = (async (req, res) => {
         writeFileSync(process.env.FILE_PATH, JSON.stringify(studentList))
         return res.send(generateResponse("Registered Successfully", 201))
     } catch (error) {
-        return res.send(generateResponse(error.message, 500))
+        return res.status(500).send(generateResponse(error.message, 500))
 
     }
 })
@@ -34,6 +34,6 @@ export const deleteStudent = (async (req, res) => {
         writeFileSync(process.env.FILE_PATH, JSON.stringify(studentData))
         return res.send(generateResponse("Deleted Successfully", 201))
     } catch (error) {
-        return res.send(generateResponse(error.message, 500))
+        return res.status(500).send(generateResponse(error.message, 500))
     }
 })

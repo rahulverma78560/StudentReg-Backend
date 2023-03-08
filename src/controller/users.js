@@ -24,7 +24,7 @@ export const register = (async (req, res) => {
         writeFileSync(FILE_PATH, JSON.stringify(users))
         res.send(generateResponse("Registered Successfully", 201))
     } catch (error) {
-        return res.send(generateResponse(error.message, 500))
+        return res.status(500).send(generateResponse(error.message, 500))
 
     }
 })
@@ -41,12 +41,12 @@ export const login = (async (req, res) => {
                 user[0]?.password
             );
             if (validatePwd) return res.send(generateResponse('Logged In Successfully', 200, createToken(user[0])));
-            return res.send(new Error("Incorrect Password"));
+            return res.status(400).send(generateResponse("Incorrect Password", 400));
         } else {
-            return res.send(new Error("invalid user"));
+            return res.status(400).send(generateResponse("invalid user", 400))
         }
     } catch (error) {
-        return res.send(generateResponse(error.message, 500))
+        return res.status(500).send(generateResponse(error.message, 500))
 
     }
 })
